@@ -7,10 +7,11 @@ interface WorkOrderDB {
   service_abridged: string;
   service_details: string;
   status: string;
-  priority: string;
   service_type: string;
   due_date: string;
   created_at: string;
+  updated_at: string;
+  priority: string;
 }
 
 const mapDBToWorkOrder = (dbRecord: WorkOrderDB): WorkOrder => ({
@@ -19,18 +20,18 @@ const mapDBToWorkOrder = (dbRecord: WorkOrderDB): WorkOrder => ({
   serviceRequired: dbRecord.service_abridged,
   serviceDetails: dbRecord.service_details,
   status: dbRecord.status as WorkOrder['status'],
-  priority: dbRecord.priority as WorkOrder['priority'],
   serviceType: dbRecord.service_type as WorkOrder['serviceType'],
+  priority: dbRecord.priority as WorkOrder['priority'],
   dueDate: dbRecord.due_date,
-  createdAt: dbRecord.created_at
+  createdAt: dbRecord.created_at,
+  updatedAt: dbRecord.updated_at
 });
 
 const mapFormDataToDB = (formData: WorkOrderFormData) => ({
   service_abridged: formData.serviceRequired,
   service_details: formData.serviceDetails,
-  status: formData.status,
-  priority: formData.priority,
-  service_type: formData.serviceType,
+  status: formData.serviceType,
+  service_type: formData.priority,
   due_date: formData.dueDate
 });
 

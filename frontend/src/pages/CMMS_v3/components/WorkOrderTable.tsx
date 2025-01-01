@@ -7,7 +7,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  TableSortLabel,
   IconButton,
   Tooltip,
   Box,
@@ -18,6 +17,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { format } from 'date-fns';
 import { WorkOrder } from '../types/workOrder';
+import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
 
 interface WorkOrderTableProps {
   workOrders: WorkOrder[];
@@ -28,31 +28,40 @@ interface WorkOrderTableProps {
   onSort: (field: keyof WorkOrder) => void;
 }
 
+type ColumnAlignment = 'left' | 'center' | 'right' | 'inherit' | 'justify';
+
+interface Column {
+  id: string;
+  label: string;
+  align: ColumnAlignment;
+  paddingRight?: string;
+}
+
 const getStatusColor = (status: string) => {
-  switch (status) {
-    case 'completed':
-      return { color: '#2e7d32', background: '#e8f5e9' };
-    case 'in_progress':
-      return { color: '#ed6c02', background: '#fff3e0' };
-    case 'pending':
-      return { color: '#0288d1', background: '#e3f2fd' };
-    case 'cancelled':
-      return { color: '#d32f2f', background: '#ffebee' };
+  switch (status.toLowerCase()) {
+    case 'corrective':
+      return '#2196f3'; // blue
+    case 'project':
+      return '#ff9800'; // orange
+    case 'preventive':
+      return '#4caf50'; // green
     default:
-      return { color: '#757575', background: '#f5f5f5' };
+      return '#757575'; // grey
   }
 };
 
 const getPriorityColor = (priority: string) => {
-  switch (priority) {
-    case 'high':
-      return { color: '#d32f2f', background: '#ffebee' };
-    case 'medium':
-      return { color: '#ed6c02', background: '#fff3e0' };
-    case 'low':
-      return { color: '#2e7d32', background: '#e8f5e9' };
+  switch (priority.toLowerCase()) {
+    case 'completed':
+      return '#4caf50'; // green
+    case 'in_progress':
+      return '#ff9800'; // orange
+    case 'pending':
+      return '#2196f3'; // blue
+    case 'cancelled':
+      return '#f44336'; // red
     default:
-      return { color: '#757575', background: '#f5f5f5' };
+      return '#757575'; // grey
   }
 };
 
@@ -63,6 +72,16 @@ const formatDate = (dateString: string) => {
     return 'Invalid Date';
   }
 };
+
+const columns: Column[] = [
+  { id: 'wo_number', label: 'WO Number', align: 'center' },
+  { id: 'serviceRequired', label: 'Service Required', align: 'center' },
+  { id: 'serviceType', label: 'Service Type', align: 'center' },
+  { id: 'status', label: 'Status', align: 'center' },
+  { id: 'priority', label: 'Priority', align: 'center' },
+  { id: 'dueDate', label: 'Due Date', align: 'center' },
+  { id: 'actions', label: 'Actions', align: 'center' },
+];
 
 export const WorkOrderTable: React.FC<WorkOrderTableProps> = ({
   workOrders,
@@ -77,167 +96,212 @@ export const WorkOrderTable: React.FC<WorkOrderTableProps> = ({
   };
 
   return (
-    <TableContainer 
-      component={Paper} 
-      elevation={2}
-      sx={{ 
-        borderRadius: 2,
-        overflow: 'hidden'
-      }}
-    >
-      <Table size="medium">
-        <TableHead>
-          <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-            <TableCell>
-              <TableSortLabel
-                active={sortField === 'wo_number'}
-                direction={sortField === 'wo_number' ? sortOrder : 'asc'}
-                onClick={createSortHandler('wo_number')}
-              >
-                WO Number
-              </TableSortLabel>
-            </TableCell>
-            <TableCell>
-              <TableSortLabel
-                active={sortField === 'serviceRequired'}
-                direction={sortField === 'serviceRequired' ? sortOrder : 'asc'}
-                onClick={createSortHandler('serviceRequired')}
-              >
-                Service Required
-              </TableSortLabel>
-            </TableCell>
-            <TableCell>
-              <TableSortLabel
-                active={sortField === 'serviceType'}
-                direction={sortField === 'serviceType' ? sortOrder : 'asc'}
-                onClick={createSortHandler('serviceType')}
-              >
-                Service Type
-              </TableSortLabel>
-            </TableCell>
-            <TableCell>
-              <TableSortLabel
-                active={sortField === 'status'}
-                direction={sortField === 'status' ? sortOrder : 'asc'}
-                onClick={createSortHandler('status')}
-              >
-                Status
-              </TableSortLabel>
-            </TableCell>
-            <TableCell>
-              <TableSortLabel
-                active={sortField === 'priority'}
-                direction={sortField === 'priority' ? sortOrder : 'asc'}
-                onClick={createSortHandler('priority')}
-              >
-                Priority
-              </TableSortLabel>
-            </TableCell>
-            <TableCell>
-              <TableSortLabel
-                active={sortField === 'dueDate'}
-                direction={sortField === 'dueDate' ? sortOrder : 'asc'}
-                onClick={createSortHandler('dueDate')}
-              >
-                Due Date
-              </TableSortLabel>
-            </TableCell>
-            <TableCell align="center">Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {workOrders.map((workOrder) => {
-            const statusColors = getStatusColor(workOrder.status);
-            const priorityColors = getPriorityColor(workOrder.priority);
-
-            return (
-              <TableRow
-                key={workOrder.id}
-                sx={{
-                  '&:hover': {
-                    backgroundColor: 'rgba(0, 0, 0, 0.04)'
-                  }
-                }}
-              >
-                <TableCell>
-                  <Typography variant="body2" fontWeight="medium">
-                    {workOrder.wo_number}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Tooltip title={workOrder.serviceRequired} placement="top">
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        maxWidth: 200,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap'
-                      }}
-                    >
-                      {workOrder.serviceRequired}
-                    </Typography>
-                  </Tooltip>
-                </TableCell>
-                <TableCell>
-                  <Typography variant="body2">
-                    {workOrder.serviceType}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Chip
-                    label={workOrder.status}
-                    size="small"
-                    sx={{
-                      color: statusColors.color,
-                      bgcolor: statusColors.background,
-                      fontWeight: 500
-                    }}
-                  />
-                </TableCell>
-                <TableCell>
-                  <Chip
-                    label={workOrder.priority}
-                    size="small"
-                    sx={{
-                      color: priorityColors.color,
-                      bgcolor: priorityColors.background,
-                      fontWeight: 500
-                    }}
-                  />
-                </TableCell>
-                <TableCell>
-                  <Typography variant="body2">
-                    {formatDate(workOrder.dueDate)}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
-                    <Tooltip title="Edit">
-                      <IconButton
-                        size="small"
-                        onClick={() => onEditClick(workOrder)}
-                        sx={{ color: 'primary.main' }}
-                      >
-                        <EditIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete">
-                      <IconButton
-                        size="small"
-                        onClick={() => onDeleteClick(workOrder)}
-                        sx={{ color: 'error.main' }}
-                      >
-                        <DeleteIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
+    <Paper sx={{ width: '100%', overflow: 'hidden', borderRadius: 1.5, boxShadow: 2 }}>
+      <TableContainer>
+        <Table sx={{ 
+          minWidth: 750, 
+          '& .MuiTableCell-root': { fontWeight: 550 },
+          '& .MuiTableCell-body': { 
+            padding: '2px',
+            '&:first-of-type': {
+              paddingLeft: '4px',
+            },
+            '&:last-of-type': {
+              paddingRight: '4px',
+            }
+          }
+        }} size="small">
+          <TableHead>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.id}
+                  align={column.align}
+                  onClick={column.id !== 'actions' ? createSortHandler(column.id as keyof WorkOrder) : undefined}
+                  sx={{
+                    backgroundColor: '#1976d2',
+                    color: 'white',
+                    fontWeight: 600,
+                    fontSize: '0.875rem',
+                    padding: '3px',
+                    whiteSpace: 'nowrap',
+                    cursor: column.id !== 'actions' ? 'pointer' : 'default',
+                    '&:first-of-type': {
+                      paddingLeft: '4px',
+                    },
+                    '&:last-of-type': {
+                      paddingRight: '4px',
+                    },
+                    '&:hover': {
+                      backgroundColor: column.id !== 'actions' ? '#1565c0' : '#1976d2',
+                    }
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {column.label}
+                    {column.id !== 'actions' && sortField === column.id && (
+                      <Box component="span" sx={{ display: 'inline-flex', marginLeft: '4px' }}>
+                        {sortOrder === 'asc' ? <ArrowUpward fontSize="small" /> : <ArrowDownward fontSize="small" />}
+                      </Box>
+                    )}
                   </Box>
                 </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {workOrders.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={columns.length} align="center" sx={{ py: 3 }}>
+                  <Typography variant="body1" color="text.secondary">
+                    No work orders found
+                  </Typography>
+                </TableCell>
               </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            ) : (
+              workOrders.map((workOrder) => (
+                <TableRow
+                  hover
+                  key={workOrder.id}
+                  sx={{
+                    '&:last-child td, &:last-child th': { border: 0 },
+                    '&:hover': {
+                      backgroundColor: 'rgba(25, 118, 210, 0.04)',
+                    },
+                    td: {
+                      padding: '2px',
+                      '&:first-of-type': {
+                        paddingLeft: '4px',
+                      },
+                      '&:last-of-type': {
+                        paddingRight: '4px',
+                      }
+                    },
+                  }}
+                >
+                  <TableCell align="center">{workOrder.wo_number}</TableCell>
+                  <TableCell sx={{ 
+                    textAlign: 'left',
+                    whiteSpace: 'nowrap',
+                    maxWidth: '200px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
+                  }}>
+                    {workOrder.serviceRequired.length > 30 ? (
+                      <Tooltip title={workOrder.serviceRequired} arrow placement="top">
+                        <Box sx={{ 
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis'
+                        }}>
+                          {workOrder.serviceRequired}
+                        </Box>
+                      </Tooltip>
+                    ) : (
+                      workOrder.serviceRequired
+                    )}
+                  </TableCell>
+                  <TableCell align="center" sx={{ paddingRight: '4px' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', paddingRight: '2px' }}>
+                      <Chip
+                        label={workOrder.serviceType}
+                        sx={{
+                          height: '20px',
+                          backgroundColor: getStatusColor(workOrder.serviceType),
+                          color: 'white',
+                          fontSize: '0.75rem',
+                          px: 1.7,
+                          '& .MuiChip-label': {
+                            px: 0.5
+                          }
+                        }}
+                      />
+                    </Box>
+                  </TableCell>
+                  <TableCell align="center" sx={{ paddingRight: '4px' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', paddingRight: '2px' }}>
+                      <Chip
+                        label={workOrder.status}
+                        sx={{
+                          height: '20px',
+                          backgroundColor: getStatusColor(workOrder.status),
+                          color: 'white',
+                          fontSize: '0.75rem',
+                          px: 1.7,
+                          '& .MuiChip-label': {
+                            px: 0.5
+                          }
+                        }}
+                      />
+                    </Box>
+                  </TableCell>
+                  <TableCell align="center" sx={{ paddingRight: '4px' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', paddingRight: '2px' }}>
+                      <Chip
+                        label={workOrder.priority}
+                        sx={{
+                          height: '20px',
+                          backgroundColor: getPriorityColor(workOrder.priority),
+                          color: 'white',
+                          fontSize: '0.75rem',
+                          px: 1.7,
+                          '& .MuiChip-label': {
+                            px: 0.5
+                          }
+                        }}
+                      />
+                    </Box>
+                  </TableCell>
+                  <TableCell align="center">{formatDate(workOrder.dueDate)}</TableCell>
+                  <TableCell align="center">
+                    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
+                      <Tooltip title="Edit work order">
+                        <IconButton
+                          onClick={() => onEditClick(workOrder)}
+                          size="small"
+                          sx={{
+                            '& svg': {
+                              transition: 'transform 0.2s ease-in-out'
+                            },
+                            '&:hover svg': {
+                              transform: 'scale(1.25)'
+                            },
+                            color: '#5c5c8a',
+                            '&:hover': {
+                              backgroundColor: 'rgba(92, 92, 138, 0.04)',
+                            }
+                          }}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Delete work order">
+                        <IconButton
+                          onClick={() => onDeleteClick(workOrder)}
+                          size="small"
+                          sx={{
+                            '& svg': {
+                              transition: 'transform 0.2s ease-in-out'
+                            },
+                            '&:hover svg': {
+                              transform: 'scale(1.25)'
+                            },
+                            color: 'error.main',
+                            '&:hover': {
+                              backgroundColor: 'rgba(211, 47, 47, 0.04)',
+                            },
+                          }}
+                        >
+                          <DeleteIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
   );
 };
