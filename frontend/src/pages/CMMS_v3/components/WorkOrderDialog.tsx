@@ -75,19 +75,38 @@ export const WorkOrderDialog: React.FC<WorkOrderDialogProps> = ({
       fullWidth
       PaperProps={{
         sx: {
-          backgroundColor: '#808080',
+          backgroundColor: '#f5f5f5',
+          borderRadius: 2,
           '& .MuiDialogTitle-root': {
-            backgroundColor: '#808080',
+            backgroundColor: '#1976d2',
+            color: 'white',
+            padding: '16px 24px',
+            fontSize: '1.25rem',
+            fontWeight: 500
           },
           '& .MuiDialogContent-root': {
-            backgroundColor: '#808080',
+            backgroundColor: '#f5f5f5',
+            padding: '24px',
           },
           '& .MuiDialogActions-root': {
-            backgroundColor: '#808080',
+            backgroundColor: '#f5f5f5',
+            padding: '16px 24px',
+            borderTop: '1px solid #e0e0e0'
           },
           '& .MuiTextField-root': {
             backgroundColor: '#ffffff',
             borderRadius: 1,
+            '& .MuiOutlinedInput-root': {
+              '&:hover fieldset': {
+                borderColor: '#1976d2',
+              },
+            },
+          },
+          '& .MuiInputLabel-root': {
+            color: '#666666',
+            '&.Mui-focused': {
+              color: '#1976d2',
+            },
           },
           '& .MuiSelect-select': {
             backgroundColor: '#ffffff',
@@ -102,7 +121,7 @@ export const WorkOrderDialog: React.FC<WorkOrderDialogProps> = ({
       <form onSubmit={handleSubmit}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-          <Grid container spacing={3} sx={{ mt: 1 }}>
+          <Grid container spacing={3} sx={{ mt: 0.5 }}>
             <Grid item xs={12}>
               <TextField
                 label="Service Required"
@@ -110,6 +129,11 @@ export const WorkOrderDialog: React.FC<WorkOrderDialogProps> = ({
                 onChange={handleChange('serviceRequired')}
                 fullWidth
                 required
+                sx={{ 
+                  '& .MuiInputBase-root': {
+                    fontSize: '1rem',
+                  }
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -120,6 +144,11 @@ export const WorkOrderDialog: React.FC<WorkOrderDialogProps> = ({
                 fullWidth
                 multiline
                 rows={4}
+                sx={{ 
+                  '& .MuiInputBase-root': {
+                    fontSize: '0.95rem',
+                  }
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -130,6 +159,11 @@ export const WorkOrderDialog: React.FC<WorkOrderDialogProps> = ({
                 onChange={handleChange('status')}
                 fullWidth
                 required
+                sx={{ 
+                  '& .MuiMenuItem-root': {
+                    fontSize: '0.95rem',
+                  }
+                }}
               >
                 {STATUS_OPTIONS.map(option => (
                   <MenuItem key={option.value} value={option.value}>
@@ -146,6 +180,11 @@ export const WorkOrderDialog: React.FC<WorkOrderDialogProps> = ({
                 onChange={handleChange('priority')}
                 fullWidth
                 required
+                sx={{ 
+                  '& .MuiMenuItem-root': {
+                    fontSize: '0.95rem',
+                  }
+                }}
               >
                 {PRIORITY_OPTIONS.map(option => (
                   <MenuItem key={option.value} value={option.value}>
@@ -162,6 +201,11 @@ export const WorkOrderDialog: React.FC<WorkOrderDialogProps> = ({
                 onChange={handleChange('serviceType')}
                 fullWidth
                 required
+                sx={{ 
+                  '& .MuiMenuItem-root': {
+                    fontSize: '0.95rem',
+                  }
+                }}
               >
                 {SERVICE_TYPE_OPTIONS.map(option => (
                   <MenuItem key={option.value} value={option.value}>
@@ -179,7 +223,12 @@ export const WorkOrderDialog: React.FC<WorkOrderDialogProps> = ({
                   slotProps={{
                     textField: {
                       fullWidth: true,
-                      required: true
+                      required: true,
+                      sx: {
+                        '& .MuiInputBase-root': {
+                          fontSize: '0.95rem',
+                        }
+                      }
                     }
                   }}
                 />
@@ -188,8 +237,28 @@ export const WorkOrderDialog: React.FC<WorkOrderDialogProps> = ({
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button type="submit" variant="contained" color="primary">
+          <Button 
+            onClick={onClose}
+            sx={{
+              color: '#666666',
+              '&:hover': {
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+              }
+            }}
+          >
+            Cancel
+          </Button>
+          <Button 
+            type="submit" 
+            variant="contained" 
+            color="primary"
+            sx={{
+              fontWeight: 500,
+              '&:hover': {
+                backgroundColor: '#1565c0',
+              }
+            }}
+          >
             Save
           </Button>
         </DialogActions>
