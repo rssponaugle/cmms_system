@@ -68,7 +68,37 @@ export const WorkOrderDialog: React.FC<WorkOrderDialogProps> = ({
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="md"
+      fullWidth
+      PaperProps={{
+        sx: {
+          backgroundColor: '#808080',
+          '& .MuiDialogTitle-root': {
+            backgroundColor: '#808080',
+          },
+          '& .MuiDialogContent-root': {
+            backgroundColor: '#808080',
+          },
+          '& .MuiDialogActions-root': {
+            backgroundColor: '#808080',
+          },
+          '& .MuiTextField-root': {
+            backgroundColor: '#ffffff',
+            borderRadius: 1,
+          },
+          '& .MuiSelect-select': {
+            backgroundColor: '#ffffff',
+          },
+          '& .MuiInputBase-root': {
+            backgroundColor: '#ffffff',
+            borderRadius: 1,
+          }
+        }
+      }}
+    >
       <form onSubmit={handleSubmit}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>

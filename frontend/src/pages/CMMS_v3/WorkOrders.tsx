@@ -11,6 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { WorkOrderTable } from './components/WorkOrderTable';
 import { WorkOrderDialog } from './components/WorkOrderDialog';
 import { DeleteConfirmationDialog } from './components/DeleteConfirmationDialog';
+import { WorkOrderFilters } from './components/WorkOrderFilters';
 import { WorkOrder, WorkOrderFormData } from './types/workOrder';
 import { workOrderService } from './services/workOrderService';
 
@@ -19,11 +20,16 @@ export const WorkOrders: React.FC = () => {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
   const [success, setSuccess] = React.useState<string | null>(null);
-  const [sortField, setSortField] = React.useState<keyof WorkOrder>('wo_number');
-  const [sortOrder, setSortOrder] = React.useState<'asc' | 'desc'>('desc');
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
   const [selectedWorkOrder, setSelectedWorkOrder] = React.useState<WorkOrder | null>(null);
+  const [sortField, setSortField] = React.useState<keyof WorkOrder>('wo_number');
+  const [sortOrder, setSortOrder] = React.useState<'asc' | 'desc'>('asc');
+  
+  // Filter states
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const [statusFilter, setStatusFilter] = React.useState('all');
+  const [priorityFilter, setPriorityFilter] = React.useState('all');
 
   const fetchWorkOrders = React.useCallback(async () => {
     try {
@@ -50,6 +56,46 @@ export const WorkOrders: React.FC = () => {
         : 'asc'
     );
     setSortField(field);
+  };
+
+  const getPriorityValue = (priority: string): number => {
+    switch (priority) {
+      case 'High': return 3;
+      case 'Medium': return 2;
+      case 'Low': return 1;
+      default: return 0;
+    }
+  };
+
+  const sortedAndFilteredWorkOrders = React.useMemo(() => {
+    return [...workOrders]
+      .filter(wo => {
+        const matchesSearch = wo.serviceRequired.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            wo.wo_number.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesStatus = statusFilter === 'all' || wo.status === statusFilter;
+        const matchesPriority = priorityFilter === 'all' || wo.priority === priorityFilter;
+        return matchesSearch && matchesStatus && matchesPriority;
+      })
+      .sort((a, b) => {
+        if (sortField === 'priority') {
+          const aValue = getPriorityValue(a.priority);
+          const bValue = getPriorityValue(b.priority);
+          return sortOrder === 'asc' ? aValue - bValue : bValue - aValue;
+        }
+        
+        const aValue = a[sortField];
+        const bValue = b[sortField];
+        
+        if (aValue < bValue) return sortOrder === 'asc' ? -1 : 1;
+        if (aValue > bValue) return sortOrder === 'asc' ? 1 : -1;
+        return 0;
+      });
+  }, [workOrders, searchQuery, statusFilter, priorityFilter, sortField, sortOrder]);
+
+  const handleClearFilters = () => {
+    setSearchQuery('');
+    setStatusFilter('all');
+    setPriorityFilter('all');
   };
 
   const handleCreateClick = () => {
@@ -105,7 +151,11 @@ export const WorkOrders: React.FC = () => {
   };
 
   return (
-    <Box sx={{ p: 3, maxWidth: 1200, margin: '0 auto' }}>
+    <Box sx={{ 
+      p: 3,
+      backgroundColor: '#808080',
+      minHeight: '100vh'
+    }}>
       <Paper 
         elevation={0}
         sx={{ 
@@ -162,6 +212,16 @@ export const WorkOrders: React.FC = () => {
         </Alert>
       )}
 
+      <WorkOrderFilters
+        searchQuery={searchQuery}
+        statusFilter={statusFilter}
+        priorityFilter={priorityFilter}
+        onSearchChange={setSearchQuery}
+        onStatusFilterChange={setStatusFilter}
+        onPriorityFilterChange={setPriorityFilter}
+        onClearFilters={handleClearFilters}
+      />
+
       {loading ? (
         <Box sx={{ 
           display: 'flex', 
@@ -173,7 +233,7 @@ export const WorkOrders: React.FC = () => {
         </Box>
       ) : (
         <WorkOrderTable
-          workOrders={workOrders}
+          workOrders={sortedAndFilteredWorkOrders}
           onEditClick={handleEditClick}
           onDeleteClick={handleDeleteClick}
           sortField={sortField}

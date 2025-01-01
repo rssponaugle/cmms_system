@@ -1,5 +1,5 @@
 export type WorkOrderStatus = 'pending' | 'in_progress' | 'completed' | 'cancelled';
-export type WorkOrderPriority = 'low' | 'medium' | 'high';
+export type WorkOrderPriority = 'Low' | 'Medium' | 'High';
 export type ServiceType = 'preventive' | 'corrective' | 'predictive' | 'emergency';
 
 export interface WorkOrder {
@@ -12,6 +12,7 @@ export interface WorkOrder {
   serviceType: ServiceType;
   dueDate: string;
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface WorkOrderFormData {
@@ -31,9 +32,9 @@ export const STATUS_OPTIONS: { value: WorkOrderStatus; label: string }[] = [
 ];
 
 export const PRIORITY_OPTIONS: { value: WorkOrderPriority; label: string }[] = [
-  { value: 'low', label: 'Low' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'high', label: 'High' }
+  { value: 'High', label: 'High' },
+  { value: 'Medium', label: 'Medium' },
+  { value: 'Low', label: 'Low' }
 ];
 
 export const SERVICE_TYPE_OPTIONS: { value: ServiceType; label: string }[] = [
@@ -47,7 +48,7 @@ export const INITIAL_FORM_DATA: WorkOrderFormData = {
   serviceRequired: '',
   serviceDetails: '',
   status: 'pending',
-  priority: 'medium',
+  priority: 'Medium',
   serviceType: 'corrective',
   dueDate: ''
 };
