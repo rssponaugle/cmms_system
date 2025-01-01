@@ -21,8 +21,8 @@ interface WorkOrderFiltersProps {
   onClearFilters: () => void;
 }
 
-const statusOptions = ['all', 'pending', 'in_progress', 'completed', 'cancelled'];
-const priorityOptions = ['all', 'high', 'medium', 'low'];
+const statusOptions = ['all', 'Pending', 'In Progress', 'Completed', 'Cancelled'];
+const priorityOptions = ['all', 'High', 'Medium', 'Low'];
 
 export const WorkOrderFilters: React.FC<WorkOrderFiltersProps> = ({
   searchQuery,
@@ -50,7 +50,13 @@ export const WorkOrderFilters: React.FC<WorkOrderFiltersProps> = ({
         placeholder="Search work orders..."
         value={searchQuery}
         onChange={(e) => onSearchChange(e.target.value)}
-        sx={{ minWidth: 250 }}
+        sx={{ 
+          minWidth: 250,
+          backgroundColor: '#ffffff',
+          '& .MuiOutlinedInput-root': {
+            backgroundColor: '#ffffff'
+          }
+        }}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -77,11 +83,17 @@ export const WorkOrderFilters: React.FC<WorkOrderFiltersProps> = ({
         label="Status"
         value={statusFilter}
         onChange={(e) => onStatusFilterChange(e.target.value)}
-        sx={{ minWidth: 120 }}
+        sx={{ 
+          minWidth: 120,
+          backgroundColor: '#ffffff',
+          '& .MuiOutlinedInput-root': {
+            backgroundColor: '#ffffff'
+          }
+        }}
       >
         {statusOptions.map((option) => (
           <MenuItem key={option} value={option} sx={{ textTransform: 'capitalize' }}>
-            {option === 'all' ? 'All Statuses' : option.replace('_', ' ')}
+            {option === 'all' ? 'All Statuses' : option}
           </MenuItem>
         ))}
       </TextField>
@@ -92,7 +104,13 @@ export const WorkOrderFilters: React.FC<WorkOrderFiltersProps> = ({
         label="Priority"
         value={priorityFilter}
         onChange={(e) => onPriorityFilterChange(e.target.value)}
-        sx={{ minWidth: 120 }}
+        sx={{ 
+          minWidth: 120,
+          backgroundColor: '#ffffff',
+          '& .MuiOutlinedInput-root': {
+            backgroundColor: '#ffffff'
+          }
+        }}
       >
         {priorityOptions.map((option) => (
           <MenuItem key={option} value={option} sx={{ textTransform: 'capitalize' }}>
