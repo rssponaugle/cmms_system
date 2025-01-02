@@ -102,10 +102,11 @@ export const WorkOrderTable: React.FC<WorkOrderTableProps> = ({
           minWidth: 750, 
           '& .MuiTableCell-root': { 
             fontWeight: 550,
-            padding: '1px 2px',
-            height: '32px',
+            padding: '0px 2px',
+            height: '28px',
             display: 'table-cell',
-            verticalAlign: 'middle'
+            verticalAlign: 'middle',
+            borderBottom: '1px solid rgba(224, 224, 224, 0.4)'
           },
           '& .MuiTableCell-body': { 
             '&:first-of-type': {
@@ -128,8 +129,8 @@ export const WorkOrderTable: React.FC<WorkOrderTableProps> = ({
                     color: 'white',
                     fontWeight: 600,
                     fontSize: '0.875rem',
-                    padding: '1px 2px',
-                    height: '36px',
+                    padding: '0px 2px',
+                    height: '32px',
                     whiteSpace: 'nowrap',
                     cursor: column.id !== 'actions' ? 'pointer' : 'default',
                     '&:first-of-type': {
@@ -177,9 +178,9 @@ export const WorkOrderTable: React.FC<WorkOrderTableProps> = ({
                     '&:hover': {
                       backgroundColor: 'rgba(25, 118, 210, 0.08)',
                     },
-                    height: '32px',
+                    height: '28px',
                     td: {
-                      padding: '1px 2px',
+                      padding: '0px 2px',
                       '&:first-of-type': {
                         paddingLeft: '4px',
                       },
@@ -242,9 +243,9 @@ export const WorkOrderTable: React.FC<WorkOrderTableProps> = ({
                           color: '#ffffff',
                           fontWeight: 500,
                           fontSize: '0.75rem',
-                          height: '24px',
+                          height: '20px',
                           '& .MuiChip-label': {
-                            padding: '0 8px',
+                            padding: '0 6px',
                           }
                         }}
                       />
@@ -271,9 +272,9 @@ export const WorkOrderTable: React.FC<WorkOrderTableProps> = ({
                           color: '#ffffff',
                           fontWeight: 500,
                           fontSize: '0.75rem',
-                          height: '24px',
+                          height: '20px',
                           '& .MuiChip-label': {
-                            padding: '0 8px',
+                            padding: '0 6px',
                           }
                         }}
                       />
@@ -300,9 +301,9 @@ export const WorkOrderTable: React.FC<WorkOrderTableProps> = ({
                           color: '#ffffff',
                           fontWeight: 500,
                           fontSize: '0.75rem',
-                          height: '24px',
+                          height: '20px',
                           '& .MuiChip-label': {
-                            padding: '0 8px',
+                            padding: '0 6px',
                           }
                         }}
                       />
