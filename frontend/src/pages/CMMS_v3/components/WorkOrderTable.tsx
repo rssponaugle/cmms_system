@@ -18,6 +18,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { format } from 'date-fns';
 import { WorkOrder } from '../types/workOrder';
 import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
+import { DeleteConfirmationDialog } from './DeleteConfirmationDialog';
 
 interface WorkOrderTableProps {
   workOrders: WorkOrder[];
@@ -93,6 +94,14 @@ export const WorkOrderTable: React.FC<WorkOrderTableProps> = ({
 }) => {
   const createSortHandler = (field: keyof WorkOrder) => () => {
     onSort(field);
+  };
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+  const [selectedWorkOrder, setSelectedWorkOrder] = React.useState<WorkOrder | null>(null);
+
+  const handleDeleteConfirm = () => {
+    onDeleteClick(selectedWorkOrder as WorkOrder);
+    setDeleteDialogOpen(false);
   };
 
   return (
@@ -334,7 +343,10 @@ export const WorkOrderTable: React.FC<WorkOrderTableProps> = ({
                       </Tooltip>
                       <Tooltip title="Delete work order">
                         <IconButton
-                          onClick={() => onDeleteClick(workOrder)}
+                          onClick={() => {
+                            setSelectedWorkOrder(workOrder);
+                            setDeleteDialogOpen(true);
+                          }}
                           size="small"
                           sx={{
                             '& svg': {
@@ -360,6 +372,12 @@ export const WorkOrderTable: React.FC<WorkOrderTableProps> = ({
           </TableBody>
         </Table>
       </TableContainer>
+      <DeleteConfirmationDialog
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        onConfirm={handleDeleteConfirm}
+        workOrderNumber={selectedWorkOrder?.wo_number || ''}
+      />
     </Paper>
   );
 };
