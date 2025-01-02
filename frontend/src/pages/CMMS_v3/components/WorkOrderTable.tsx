@@ -100,9 +100,14 @@ export const WorkOrderTable: React.FC<WorkOrderTableProps> = ({
       <TableContainer>
         <Table sx={{ 
           minWidth: 750, 
-          '& .MuiTableCell-root': { fontWeight: 550 },
+          '& .MuiTableCell-root': { 
+            fontWeight: 550,
+            padding: '1px 2px',
+            height: '32px',
+            display: 'table-cell',
+            verticalAlign: 'middle'
+          },
           '& .MuiTableCell-body': { 
-            padding: '2px',
             '&:first-of-type': {
               paddingLeft: '4px',
             },
@@ -123,7 +128,8 @@ export const WorkOrderTable: React.FC<WorkOrderTableProps> = ({
                     color: 'white',
                     fontWeight: 600,
                     fontSize: '0.875rem',
-                    padding: '3px',
+                    padding: '1px 2px',
+                    height: '36px',
                     whiteSpace: 'nowrap',
                     cursor: column.id !== 'actions' ? 'pointer' : 'default',
                     '&:first-of-type': {
@@ -171,8 +177,9 @@ export const WorkOrderTable: React.FC<WorkOrderTableProps> = ({
                     '&:hover': {
                       backgroundColor: 'rgba(25, 118, 210, 0.08)',
                     },
+                    height: '32px',
                     td: {
-                      padding: '2px',
+                      padding: '1px 2px',
                       '&:first-of-type': {
                         paddingLeft: '4px',
                       },
@@ -182,80 +189,127 @@ export const WorkOrderTable: React.FC<WorkOrderTableProps> = ({
                     },
                   }}
                 >
-                  <TableCell align="center">{workOrder.wo_number}</TableCell>
+                  <TableCell align="center" sx={{ display: 'table-cell', verticalAlign: 'middle' }}>{workOrder.wo_number}</TableCell>
                   <TableCell sx={{ 
                     textAlign: 'left',
                     whiteSpace: 'nowrap',
                     maxWidth: '200px',
                     overflow: 'hidden',
-                    textOverflow: 'ellipsis'
+                    textOverflow: 'ellipsis',
+                    display: 'table-cell',
+                    verticalAlign: 'middle'
                   }}>
                     {workOrder.serviceRequired.length > 30 ? (
                       <Tooltip title={workOrder.serviceRequired} arrow placement="top">
                         <Box sx={{ 
                           overflow: 'hidden',
-                          textOverflow: 'ellipsis'
+                          textOverflow: 'ellipsis',
+                          display: 'flex',
+                          alignItems: 'center',
+                          height: '100%'
                         }}>
                           {workOrder.serviceRequired}
                         </Box>
                       </Tooltip>
                     ) : (
-                      workOrder.serviceRequired
+                      <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        height: '100%'
+                      }}>
+                        {workOrder.serviceRequired}
+                      </Box>
                     )}
                   </TableCell>
-                  <TableCell align="center" sx={{ paddingRight: '4px' }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', paddingRight: '2px' }}>
+                  <TableCell align="center" sx={{ 
+                    display: 'table-cell',
+                    verticalAlign: 'middle',
+                    paddingRight: '4px'
+                  }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '100%',
+                      height: '100%',
+                      paddingRight: '2px'
+                    }}>
                       <Chip
                         label={workOrder.serviceType}
+                        size="small"
                         sx={{
-                          height: '20px',
                           backgroundColor: getStatusColor(workOrder.serviceType),
-                          color: 'white',
+                          color: '#ffffff',
+                          fontWeight: 500,
                           fontSize: '0.75rem',
-                          px: 1.7,
+                          height: '24px',
                           '& .MuiChip-label': {
-                            px: 0.5
+                            padding: '0 8px',
                           }
                         }}
                       />
                     </Box>
                   </TableCell>
-                  <TableCell align="center" sx={{ paddingRight: '4px' }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', paddingRight: '2px' }}>
+                  <TableCell align="center" sx={{ 
+                    display: 'table-cell',
+                    verticalAlign: 'middle',
+                    paddingRight: '4px'
+                  }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '100%',
+                      height: '100%',
+                      paddingRight: '2px'
+                    }}>
                       <Chip
                         label={workOrder.status}
+                        size="small"
                         sx={{
-                          height: '20px',
-                          backgroundColor: getStatusColor(workOrder.status),
-                          color: 'white',
+                          backgroundColor: getPriorityColor(workOrder.status),
+                          color: '#ffffff',
+                          fontWeight: 500,
                           fontSize: '0.75rem',
-                          px: 1.7,
+                          height: '24px',
                           '& .MuiChip-label': {
-                            px: 0.5
+                            padding: '0 8px',
                           }
                         }}
                       />
                     </Box>
                   </TableCell>
-                  <TableCell align="center" sx={{ paddingRight: '4px' }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', paddingRight: '2px' }}>
+                  <TableCell align="center" sx={{ 
+                    display: 'table-cell',
+                    verticalAlign: 'middle',
+                    paddingRight: '4px'
+                  }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '100%',
+                      height: '100%',
+                      paddingRight: '2px'
+                    }}>
                       <Chip
                         label={workOrder.priority}
+                        size="small"
                         sx={{
-                          height: '20px',
                           backgroundColor: getPriorityColor(workOrder.priority),
-                          color: 'white',
+                          color: '#ffffff',
+                          fontWeight: 500,
                           fontSize: '0.75rem',
-                          px: 1.7,
+                          height: '24px',
                           '& .MuiChip-label': {
-                            px: 0.5
+                            padding: '0 8px',
                           }
                         }}
                       />
                     </Box>
                   </TableCell>
-                  <TableCell align="center">{formatDate(workOrder.dueDate)}</TableCell>
-                  <TableCell align="center">
+                  <TableCell align="center" sx={{ display: 'table-cell', verticalAlign: 'middle' }}>{formatDate(workOrder.dueDate)}</TableCell>
+                  <TableCell align="center" sx={{ display: 'table-cell', verticalAlign: 'middle' }}>
                     <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
                       <Tooltip title="Edit work order">
                         <IconButton

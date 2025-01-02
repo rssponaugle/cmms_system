@@ -121,7 +121,7 @@ export const WorkOrderDialog: React.FC<WorkOrderDialogProps> = ({
       <form onSubmit={handleSubmit}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-          <Grid container spacing={3} sx={{ mt: 0.5 }}>
+          <Grid container spacing={1.5} sx={{ mt: 0 }}>
             <Grid item xs={12}>
               <TextField
                 label="Service Required"
