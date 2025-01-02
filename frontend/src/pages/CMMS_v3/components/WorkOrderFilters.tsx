@@ -21,8 +21,8 @@ interface WorkOrderFiltersProps {
   onClearFilters: () => void;
 }
 
-const statusOptions = ['all', 'pending', 'in_progress', 'completed', 'cancelled'];
-const priorityOptions = ['all', 'high', 'medium', 'low'];
+const statusOptions = ['all', 'Pending', 'In Progress', 'Completed', 'Cancelled'];
+const priorityOptions = ['all', 'High', 'Medium', 'Low'];
 
 export const WorkOrderFilters: React.FC<WorkOrderFiltersProps> = ({
   searchQuery,
@@ -43,6 +43,10 @@ export const WorkOrderFilters: React.FC<WorkOrderFiltersProps> = ({
         mb: 3,
         flexWrap: 'wrap',
         alignItems: 'center',
+        backgroundColor: '#f8f9fa',
+        padding: '16px',
+        borderRadius: '8px',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
       }}
     >
       <TextField
@@ -50,11 +54,36 @@ export const WorkOrderFilters: React.FC<WorkOrderFiltersProps> = ({
         placeholder="Search work orders..."
         value={searchQuery}
         onChange={(e) => onSearchChange(e.target.value)}
-        sx={{ minWidth: 250 }}
+        sx={{ 
+          minWidth: 250,
+          '& .MuiOutlinedInput-root': {
+            backgroundColor: '#ffffff',
+            transition: 'all 0.2s',
+            '&:hover': {
+              backgroundColor: '#ffffff',
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#1976d2',
+              },
+            },
+            '&.Mui-focused': {
+              backgroundColor: '#ffffff',
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#1976d2',
+                borderWidth: '2px',
+              },
+            },
+          },
+          '& .MuiInputLabel-root': {
+            color: '#666666',
+            '&.Mui-focused': {
+              color: '#1976d2',
+            },
+          },
+        }}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <SearchIcon color="action" />
+              <SearchIcon sx={{ color: '#666666' }} />
             </InputAdornment>
           ),
           endAdornment: searchQuery && (
@@ -63,6 +92,12 @@ export const WorkOrderFilters: React.FC<WorkOrderFiltersProps> = ({
                 size="small"
                 onClick={() => onSearchChange('')}
                 edge="end"
+                sx={{
+                  color: '#666666',
+                  '&:hover': {
+                    color: '#1976d2',
+                  },
+                }}
               >
                 <ClearIcon fontSize="small" />
               </IconButton>
@@ -77,11 +112,55 @@ export const WorkOrderFilters: React.FC<WorkOrderFiltersProps> = ({
         label="Status"
         value={statusFilter}
         onChange={(e) => onStatusFilterChange(e.target.value)}
-        sx={{ minWidth: 120 }}
+        sx={{ 
+          minWidth: 140,
+          '& .MuiOutlinedInput-root': {
+            backgroundColor: '#ffffff',
+            transition: 'all 0.2s',
+            '&:hover': {
+              backgroundColor: '#ffffff',
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#1976d2',
+              },
+            },
+            '&.Mui-focused': {
+              backgroundColor: '#ffffff',
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#1976d2',
+                borderWidth: '2px',
+              },
+            },
+          },
+          '& .MuiInputLabel-root': {
+            color: '#666666',
+            '&.Mui-focused': {
+              color: '#1976d2',
+            },
+          },
+          '& .MuiSelect-select': {
+            paddingY: '8px',
+          },
+        }}
       >
         {statusOptions.map((option) => (
-          <MenuItem key={option} value={option} sx={{ textTransform: 'capitalize' }}>
-            {option === 'all' ? 'All Statuses' : option.replace('_', ' ')}
+          <MenuItem 
+            key={option} 
+            value={option} 
+            sx={{ 
+              fontSize: '0.875rem',
+              minHeight: '32px',
+              '&:hover': {
+                backgroundColor: 'rgba(25, 118, 210, 0.08)',
+              },
+              '&.Mui-selected': {
+                backgroundColor: 'rgba(25, 118, 210, 0.12)',
+                '&:hover': {
+                  backgroundColor: 'rgba(25, 118, 210, 0.16)',
+                },
+              },
+            }}
+          >
+            {option === 'all' ? 'All Statuses' : option}
           </MenuItem>
         ))}
       </TextField>
@@ -92,10 +171,54 @@ export const WorkOrderFilters: React.FC<WorkOrderFiltersProps> = ({
         label="Priority"
         value={priorityFilter}
         onChange={(e) => onPriorityFilterChange(e.target.value)}
-        sx={{ minWidth: 120 }}
+        sx={{ 
+          minWidth: 140,
+          '& .MuiOutlinedInput-root': {
+            backgroundColor: '#ffffff',
+            transition: 'all 0.2s',
+            '&:hover': {
+              backgroundColor: '#ffffff',
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#1976d2',
+              },
+            },
+            '&.Mui-focused': {
+              backgroundColor: '#ffffff',
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#1976d2',
+                borderWidth: '2px',
+              },
+            },
+          },
+          '& .MuiInputLabel-root': {
+            color: '#666666',
+            '&.Mui-focused': {
+              color: '#1976d2',
+            },
+          },
+          '& .MuiSelect-select': {
+            paddingY: '8px',
+          },
+        }}
       >
         {priorityOptions.map((option) => (
-          <MenuItem key={option} value={option} sx={{ textTransform: 'capitalize' }}>
+          <MenuItem 
+            key={option} 
+            value={option} 
+            sx={{ 
+              fontSize: '0.875rem',
+              minHeight: '32px',
+              '&:hover': {
+                backgroundColor: 'rgba(25, 118, 210, 0.08)',
+              },
+              '&.Mui-selected': {
+                backgroundColor: 'rgba(25, 118, 210, 0.12)',
+                '&:hover': {
+                  backgroundColor: 'rgba(25, 118, 210, 0.16)',
+                },
+              },
+            }}
+          >
             {option === 'all' ? 'All Priorities' : option}
           </MenuItem>
         ))}
@@ -108,10 +231,13 @@ export const WorkOrderFilters: React.FC<WorkOrderFiltersProps> = ({
             onClick={onClearFilters}
             sx={{ 
               ml: 'auto',
-              color: 'text.secondary',
+              color: '#666666',
+              backgroundColor: 'rgba(0, 0, 0, 0.04)',
               '&:hover': {
-                color: 'error.main',
+                backgroundColor: 'rgba(211, 47, 47, 0.08)',
+                color: '#d32f2f',
               },
+              transition: 'all 0.2s',
             }}
           >
             <FilterListIcon />
