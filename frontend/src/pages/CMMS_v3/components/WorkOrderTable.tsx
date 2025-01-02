@@ -165,8 +165,11 @@ export const WorkOrderTable: React.FC<WorkOrderTableProps> = ({
                   key={workOrder.id}
                   sx={{
                     '&:last-child td, &:last-child th': { border: 0 },
+                    '&:nth-of-type(even)': {
+                      backgroundColor: '#e6f2ff',
+                    },
                     '&:hover': {
-                      backgroundColor: 'rgba(25, 118, 210, 0.04)',
+                      backgroundColor: 'rgba(25, 118, 210, 0.08)',
                     },
                     td: {
                       padding: '2px',
